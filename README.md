@@ -2,10 +2,10 @@
 
 [Apereo CAS](https://apereo.github.io/cas) images for dev/test environments, published to GHCR by [EsupPortail](https://github.com/EsupPortail).
 
-| Image | Description |
-|---|---|
-| `ghcr.io/esupportail/apereo-cas-ldap` | CAS + LDAP authentication |
-| `ghcr.io/esupportail/apereo-cas-ldap-mfa` | CAS + LDAP + MFA |
+| Image                                                                                                                                 | Description |
+|---------------------------------------------------------------------------------------------------------------------------------------|---|
+| [`ghcr.io/esupportail/apereo-cas-ldap`](https://github.com/EsupPortail/esup-apereo-cas-docker/pkgs/container/apereo-cas-ldap)         | CAS + LDAP authentication |
+| [`ghcr.io/esupportail/apereo-cas-ldap-mfa`](https://github.com/EsupPortail/esup-apereo-cas-docker/pkgs/container/apereo-cas-ldap-mfa) | CAS + LDAP + MFA |
 
 ## Quick start
 
