@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CAS_VERSION="$(grep -E '^cas\.version=' "${SCRIPT_DIR}/version.properties" | cut -d= -f2 | tr -d '[:space:]')"
 REGISTRY="${REGISTRY:-ghcr.io}"
-NAMESPACE="${NAMESPACE:-esupportail}"
+NAMESPACE="$(printf '%s' "${NAMESPACE:-esupportail}" | tr '[:upper:]' '[:lower:]')"
 PUSH="${1:-}"
 
 build_image() {
