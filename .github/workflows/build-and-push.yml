@@ -4,59 +4,21 @@ on:
   push:
     tags:
       - 'v*.*.*'
-  workflow_dispatch:
 
 permissions:
   contents: read
   packages: write
 
-concurrency:
-  group: build-and-push-${{ github.ref }}
-  cancel-in-progress: false
-
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Resolve release metadata
-        id: meta
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          cas_version="$(bash ./build.sh --print-version)"
-          git_tag="${GITHUB_REF_NAME#v}"
-          image_namespace="$(printf '%s' "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')"
-
-          if [[ "$git_tag" != "$cas_version" ]]; then
-            echo "::error::Le tag ${GITHUB_REF_NAME} ne correspond pas à version.properties (${cas_version})."
-            exit 1
-          fi
-
-          echo "cas_version=$cas_version" >> "$GITHUB_OUTPUT"
-          echo "image_namespace=$image_namespace" >> "$GITHUB_OUTPUT"
-
-      - name: Login to GHCR
-        uses: docker/login-action@v3
+      - uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push images
-        env:
-          IMAGE_NAMESPACE: ${{ steps.meta.outputs.image_namespace }}
-          IMAGE_TAG: ${{ steps.meta.outputs.cas_version }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          bash ./build.sh \
-            --push \
-            --registry ghcr.io \
-            --image-namespace "$IMAGE_NAMESPACE" \
-            --image-tag "$IMAGE_TAG"
-
+      - run: NAMESPACE=${{ github.repository_owner }} bash ./build.sh --push
