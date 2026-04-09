@@ -5,16 +5,15 @@ services:
      environment:
        LDAP_DOMAIN: "example.org"
      command: --copy-service
-     ports:
-       - "3980:389"
      volumes:
-      - ./docker/ldap-config:/container/service/slapd/assets/config/bootstrap/ldif/custom
+      - ./docker-example/ldap-config:/container/service/slapd/assets/config/bootstrap/ldif/custom
 
    cas:
-     image: ghcr.io/esupportail/apereo-cas-ldap-mfa:7.2.7.1
+     image: ghcr.io/esupportail/apereo-cas-ldap:7.2.7.1
      volumes:
-       - ./docker/cas-config:/etc/cas
-       - ./docker/cas-config/tmp-cas:/tmp/cas
+       - ./docker-example/cas-config:/etc/cas
+     ports:
+       - "8080:8080"
      depends_on:
        openldap:
          condition: service_started
