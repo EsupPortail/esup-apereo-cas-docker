@@ -9,7 +9,7 @@ services:
       - ./docker-example/ldap-config:/container/service/slapd/assets/config/bootstrap/ldif/custom
 
    cas:
-     image: ghcr.io/esupportail/apereo-cas-ldap:7.2.7.1
+     image: ghcr.io/esupportail/apereo-cas-ldap:7.3.6
      volumes:
        - ./docker-example/cas-config:/etc/cas
      ports:

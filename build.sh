@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -17,11 +17,11 @@ build_image() {
   ref="${REGISTRY}/${NAMESPACE}/${name}:${CAS_VERSION}"
   echo "==> Building ${ref}"
 
-  curl -fsSL --get "${CAS_STARTER_URL:-https://getcas.apereo.org/starter.zip}" \
-    --data-urlencode "type=cas-overlay" \
-    --data-urlencode "dependencies=${deps}" \
-    --data-urlencode "casVersion=${CAS_VERSION}" \
-    -o "${workdir}/overlay.zip"
+  curl ${CAS_STARTER_URL:-https://getcas.apereo.org/starter.zip} \
+    -d type=cas-overlay \
+    -d dependencies=${deps} \
+    -d casVersion=${CAS_VERSION} \
+    -o ${workdir}/overlay.zip
 
   unzip -q "${workdir}/overlay.zip" -d "${workdir}"
   rm -f "${workdir}/overlay.zip"
