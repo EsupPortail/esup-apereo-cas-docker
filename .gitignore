@@ -1,0 +1,12 @@
+*
+!.gitignore
+!version.properties
+!LICENSE
+!README.md
+!docker-compose-example.yml
+!docker-example/
+!docker-example/**
+!build.sh
+!workflows/
+!workflows/**
+
