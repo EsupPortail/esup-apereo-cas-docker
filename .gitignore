@@ -1,5 +1,8 @@
 *
 !.gitignore
+!.github/
+!.github/workflows/
+!.github/workflows/**
 !version.properties
 !LICENSE
 !README.md
@@ -7,6 +10,4 @@
 !docker-example/
 !docker-example/**
 !build.sh
-!workflows/
-!workflows/**
 

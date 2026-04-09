@@ -19,10 +19,12 @@ Two image flavours are published to the GitHub Container Registry:
 ├── README.md
 ├── version.properties          # CAS version tracked here
 ├── docker-compose-example.yml  # Example of docker-compose to use docker images : ready-to-run stack (CAS + OpenLDAP)
-├── docker-compose-example      # Example of configuration files for docker cas configuration and docker ldap server
-├── build.sh                    # Script to build and push images to GHCR
-└── workflows/                  # GitHub Actions workflows
-└── build-and-push.yml          # CI: build & push on every tag
+├── docker-example/             # Example configuration files for CAS and the LDAP test server
+├── build.sh                    # Script to build the CAS images locally or in CI
+└── .github/
+	└── workflows/
+		├── build-and-push.yml  # CI: build & push on every tag
+		└── validate-build.yml  # CI: validates build.sh on pushes / PRs
 ```
 
 ## Quick start
@@ -43,10 +45,30 @@ Default test credentials are defined in the compose file.
 The CAS version used to build the images is tracked in [`version.properties`](version.properties):
 
 ```properties
-cas.version=8.x.x
+cas.version=7.3.6
 ```
 
 Bump this file and push a new tag to trigger a CI build.
+
+## Build images locally
+
+The repository provides a single entry point to build both images from the official CAS starter:
+
+```bash
+./build.sh
+```
+
+This produces the following images locally, tagged with the version found in `version.properties`:
+
+- `ghcr.io/esupportail/apereo-cas-ldap:<cas.version>`
+- `ghcr.io/esupportail/apereo-cas-ldap-mfa:<cas.version>`
+
+To push them to GHCR after authenticating with Docker:
+
+```bash
+docker login ghcr.io
+./build.sh --push
+```
 
 ## CI / Release workflow
 
@@ -55,16 +77,16 @@ Images are built and pushed automatically by GitHub Actions on every pushed tag 
 To release a new version:
 ```bash
 # 1. Update the version
-echo "cas.version=8.x.x" > version.properties
+echo "cas.version=7.3.6" > version.properties
 git add version.properties
-git commit -m "chore: bump CAS to 8.x.x"
+git commit -m "chore: bump CAS to 7.3.6"
 
 # 2. Tag and push — this triggers the CI build
-git tag v8.x.x
+git tag v7.3.6
 git push origin main --tags
 ```
 
-The workflow builds both `apereo-cas-ldap` and `apereo-cas-ldap-mfa` and pushes them to [GHCR](https://ghcr.io) under the `EsupPortail` namespace.
+The release workflow validates that the Git tag matches `cas.version`, then builds both `apereo-cas-ldap` and `apereo-cas-ldap-mfa` and pushes them to [GHCR](https://ghcr.io) under the repository owner namespace.
 
 ## Previously on Docker Hub
 
