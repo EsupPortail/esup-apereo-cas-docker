@@ -33,4 +33,4 @@ build_image() {
 }
 
 build_image "apereo-cas-ldap"     "support-ldap"
-build_image "apereo-cas-ldap-mfa" "support-ldap,support-simple-mfa,groovy"
+build_image "apereo-cas-ldap-mfa" "support-ldap,support-simple-mfa,support-trusted-mfa-mongo,groovy"
