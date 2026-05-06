@@ -26,7 +26,7 @@ build_image() {
   unzip -q "${workdir}/overlay.zip" -d "${workdir}"
   rm -f "${workdir}/overlay.zip"
 
-  docker build --pull -t "${ref}" "${workdir}"
+  docker build --no-cache --pull -t "${ref}" "${workdir}"
 
   [[ "${PUSH}" == "--push" ]] && docker push "${ref}"
   echo "==> Done: ${ref}"
