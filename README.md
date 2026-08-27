@@ -35,7 +35,11 @@ Credentials:
    git push origin main --tags
    ```
 
-The CI workflow will automatically build and push both images to GHCR.
+~~The CI workflow will automatically build and push both images to GHCR.~~
+
+The CI workflow will automatically build and push apereo-cas-ldap image.
+
+We can no longer build and push both images because of a "too many requests" error on https://getcas.apereo.org :/
 
 ## Local build
 
@@ -43,7 +47,7 @@ The CI workflow will automatically build and push both images to GHCR.
 # Build only
 ./build.sh
 
-# Build and push
+# Build and push on ghcr.io (you need rights on github repository and setup a 'Personal access tokens (classic)' on https://github.com/settings/credentials
 docker login ghcr.io
 ./build.sh --push
 ```
