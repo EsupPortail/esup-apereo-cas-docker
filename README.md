@@ -24,14 +24,14 @@ Credentials:
 
 1. Update `version.properties`:
    ```properties
-   cas.version=7.x.x
+   cas.version=8.x.x
    ```
 
 2. Commit, tag and push:
    ```bash
    git add version.properties
-   git commit -m "chore: bump CAS to 7.x.x"
-   git tag v7.x.x
+   git commit -m "chore: bump CAS to 8.x.x"
+   git tag v8.x.x
    git push origin main --tags
    ```
 
