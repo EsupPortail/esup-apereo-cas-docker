@@ -35,11 +35,22 @@ Credentials:
    git push origin main --tags
    ```
 
-~~The CI workflow will automatically build and push both images to GHCR.~~
+The CI workflow automatically builds, checks and pushes both images to GHCR.
+Only `version.properties` needs to change for a CAS version update.
 
-The CI workflow will automatically build and push apereo-cas-ldap image.
+The build downloads one base overlay from https://getcas.apereo.org for the requested
+CAS version and reuses it for both images. Required dependencies are added explicitly
+to its `build.gradle`, independently of the starter's module selection:
 
-We can no longer build and push both images because of a "too many requests" error on https://getcas.apereo.org :/
+- LDAP: `cas-server-support-ldap`.
+- LDAP + MFA: LDAP plus `cas-server-support-simple-mfa`,
+  `cas-server-support-trusted-mfa-mongo` and `cas-server-core-scripting` (Groovy).
+
+HTTP 429 and transient server errors are retried with a delay. The starter must still
+be available; no generated overlay is maintained in this repository. Before publishing,
+the script checks both final images for the expected module JARs at the requested CAS
+version (including libraries inside a WAR). A missing module aborts publication.
+This checks packaging; it does not replace runtime authentication tests.
 
 ## Local build
 
@@ -51,3 +62,9 @@ We can no longer build and push both images because of a "too many requests" err
 docker login ghcr.io
 ./build.sh --push
 ```
+
+Requires Bash, curl, unzip and Docker. The generated image must include `sh`, `find`,
+and the JDK `jar` tool for archive inspection.
+
+Optional environment variables: `REGISTRY` (default `ghcr.io`), `NAMESPACE` (default
+`esupportail`) and `CAS_STARTER_URL` (default `https://getcas.apereo.org/starter.zip`).
